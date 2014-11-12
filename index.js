@@ -18,7 +18,7 @@ app.get('/en', function(req, res) {
 
 app.get('/', function(req, res) {
 	// res.redirect('/zh');
-	fs.readFile(path.join(__dirname, './views/index.js'), function(err, fd) {
+	fs.readFile(path.join(__dirname, './views/index.html'), function(err, fd) {
 		if (err) {
 			console.log(err);
 			throw err;
