@@ -4,11 +4,11 @@
 	</head>
 	<body>
 		<h2><%=content %></h2>
-		<div>人员名单</div>
+		<div>表名：<%=tableName %></div>
 		<% users.forEach(function(u) { %>
 			<div>
-				<span>姓名：<%=u.name %></span>
-				<span style='margin-left: 20px;'>年龄：<%=u.age %></span>
+				<span>姓名：<%=u.LOGIN_NAME %></span>
+				<span style='margin-left: 20px;'>创建时间：<%=u.CREATE_TIME %></span>
 			</div>
 		<% }) %>
 	</body>
