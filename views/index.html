@@ -1,15 +1,52 @@
 <html>
-	<head>
-		<title><%=title %></title>
-	</head>
-	<body>
-		<h2><%=content %></h2>
-		<div>表名：<%=tableName %></div>
-		<% users.forEach(function(u) { %>
-			<div>
-				<span>姓名：<%=u.LOGIN_NAME %></span>
-				<span style='margin-left: 20px;'>创建时间：<%=u.CREATE_TIME %></span>
-			</div>
-		<% }) %>
-	</body>
+<head>
+	<title><%=title %></title>
+	<style type="text/css">
+		table {
+			border-top: solid 1px black;
+			border-left: solid 1px black;
+			font-size: 12px;
+			width: 100%;
+			text-align: center;
+		}
+		
+		th {
+			white-space: nowrap;
+		}
+		
+		th, td {
+			border-right-style: solid;
+			border-right-width: 1px;
+			border-bottom-style: solid;
+			border-bottom-width: 1px;
+			height: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<form action="/form" method="post">
+		<input type="text" name="name" />
+		<input type="text" name="password" />
+		<button type="submit">提交</button>
+	</form>
+
+	<div>表名：<%=tableName %></div>
+	<table cellpadding="0" cellspacing="0">
+		<thead>
+			<tr>
+				<th>姓名</th>
+				<th>创建时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% users.forEach(function(u) { %>
+				<tr>
+					<td><%=u.LOGIN_NAME %></td>
+					<td><%=u.CREATE_TIME %></td>
+				</tr>
+			<% }) %>
+		</tbody>
+	</table>
+</body>
 </html>

@@ -2,16 +2,21 @@ console.log('Express start..');
 
 var path = require('path');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var ejs = require('ejs');
 var express = require('express');
 var app = express();
 
 app.use(express.static(path.join(__dirname, './public')));
+app.use(bodyParser.urlencoded({
+	extended : true
+}));
+app.use(bodyParser.json());
 
 app.get('/data', function(req, res) {
 	var conn = mysql.createConnection({
-		host : '192.168.20.239',
+		host : '192.168.120.10',
 		user : 'root',
 		password : 'root',
 		database : 'uccp'
@@ -30,13 +35,16 @@ app.get('/data', function(req, res) {
 			}
 
 			res.send(ejs.render(fd.toString(), {
-				title : 'hereee..',
-				content : '首页',
-				tableName: 'T_CM_USER',
+				title : 'someTitle',
+				tableName : 'T_CM_USER',
 				users : rows
 			}));
 		});
 	});
+});
+
+app.post('/form', function(req, res) {
+	res.redirect('/data');
 });
 
 app.get('/zh', function(req, res) {
@@ -48,33 +56,7 @@ app.get('/en', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-	// res.redirect('/zh');
-	fs.readFile(path.join(__dirname, './views/index.html'), function(err, fd) {
-		if (err) {
-			console.log(err);
-			throw err;
-		}
-
-		var users = [];
-		users.push({
-			name : 'Tobi',
-			age : 2
-		});
-		users.push({
-			name : 'Loki',
-			age : 2
-		});
-		users.push({
-			name : 'Jane',
-			age : 6
-		});
-
-		res.send(ejs.render(fd.toString(), {
-			title : 'hereee..',
-			content : 'data页面',
-			users : users
-		}));
-	});
+	res.redirect('/data');
 });
 
 app.listen(8888);
