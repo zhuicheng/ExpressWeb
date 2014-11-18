@@ -10,7 +10,7 @@ var app = express();
 
 app.use(express.static(path.join(__dirname, './public')));
 app.use(bodyParser.urlencoded({
-	extended : true
+	extended : false
 }));
 app.use(bodyParser.json());
 
@@ -22,10 +22,12 @@ app.get('/data', function(req, res) {
 		database : 'uccp'
 	});
 
-	conn.query('SELECT * FROM T_CM_USER', function(err, rows, fields) {
+	var tableName = (req.query && req.query.name) ? req.query.name.toUpperCase() : 'T_CM_USER';
+
+	conn.query('SELECT * FROM ' + tableName, function(err, rows, fields) {
 		if (err) {
-			console.error('%s', err);
-			throw err;
+			res.redirect('/data');
+			return false;
 		}
 
 		fs.readFile(path.join(__dirname, './views/index.html'), function(err, fd) {
@@ -36,8 +38,8 @@ app.get('/data', function(req, res) {
 
 			res.send(ejs.render(fd.toString(), {
 				title : 'someTitle',
-				tableName : 'T_CM_USER',
-				users : rows
+				tableName : tableName,
+				data : rows
 			}));
 		});
 	});
