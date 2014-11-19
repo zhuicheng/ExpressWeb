@@ -10,16 +10,16 @@ var app = express();
 
 app.use(express.static(path.join(__dirname, './public')));
 app.use(bodyParser.urlencoded({
-	extended : false
+	extended: false
 }));
 app.use(bodyParser.json());
 
 app.use('/data', function(req, res) {
 	var conn = mysql.createConnection({
-		host : '192.168.120.10',
-		user : 'root',
-		password : 'root',
-		database : 'uccp'
+		host: '192.168.120.10',
+		user: 'root',
+		password: 'root',
+		database: 'uccp'
 	});
 
 	var tableName = (req.body && req.body.name) ? req.body.name.toUpperCase() : 'T_CM_USER';
@@ -37,9 +37,9 @@ app.use('/data', function(req, res) {
 			}
 
 			res.send(ejs.render(fd.toString(), {
-				title : tableName,
-				tableName : tableName,
-				data : rows
+				title: tableName,
+				tableName: tableName,
+				data: rows
 			}));
 		});
 	});
