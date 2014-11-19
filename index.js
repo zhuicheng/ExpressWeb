@@ -3,30 +3,27 @@ console.log('Express start..');
 var path = require('path');
 var fs = require('fs');
 var bodyParser = require('body-parser');
-var mysql = require('mysql');
 var ejs = require('ejs');
 var express = require('express');
-var app = express();
 
+var dao = require('./dao');
+
+var app = express();
 app.use(express.static(path.join(__dirname, './public')));
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
 app.use(bodyParser.json());
 
-var pool = mysql.createPool({
-	host: '192.168.120.10',
-	user: 'root',
-	password: 'root',
-	connectionLimit: 3,
-	database: 'uccp',
-	debug: false
-});
-
 app.use('/data', function(req, res) {
-	var tableName = (req.body && req.body.name) ? req.body.name.toUpperCase() : 'T_CM_USER';
+	var tableName = 'T_CM_USER';
+	if (req.method === 'GET') {
+		tableName = (req.query && req.query.name) ? req.query.name.toUpperCase() : tableName;
+	} else if (req.method === 'POST') {
+		tableName = (req.body && req.body.name) ? req.body.name.toUpperCase() : tableName;
+	}
 
-	pool.query('SELECT * FROM ' + tableName, function(err, rows, fields) {
+	dao.queryData(tableName, function(err, rows, fields) {
 		if (err) {
 			res.redirect('/data');
 			return false;
@@ -45,18 +42,6 @@ app.use('/data', function(req, res) {
 			}));
 		});
 	});
-});
-
-app.post('/form', function(req, res) {
-	res.redirect('/data');
-});
-
-app.get('/zh', function(req, res) {
-	res.send('你好');
-});
-
-app.get('/en', function(req, res) {
-	res.send('hello world');
 });
 
 app.get('/', function(req, res) {
