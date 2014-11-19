@@ -14,17 +14,19 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.use('/data', function(req, res) {
-	var conn = mysql.createConnection({
-		host: '192.168.120.10',
-		user: 'root',
-		password: 'root',
-		database: 'uccp'
-	});
+var pool = mysql.createPool({
+	host: '192.168.120.10',
+	user: 'root',
+	password: 'root',
+	connectionLimit: 3,
+	database: 'uccp',
+	debug: false
+});
 
+app.use('/data', function(req, res) {
 	var tableName = (req.body && req.body.name) ? req.body.name.toUpperCase() : 'T_CM_USER';
 
-	conn.query('SELECT * FROM ' + tableName, function(err, rows, fields) {
+	pool.query('SELECT * FROM ' + tableName, function(err, rows, fields) {
 		if (err) {
 			res.redirect('/data');
 			return false;
