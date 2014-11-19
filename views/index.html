@@ -10,10 +10,6 @@
 			text-align: center;
 		}
 		
-		th {
-			white-space: nowrap;
-		}
-		
 		th, td {
 			border-right-style: solid;
 			border-right-width: 1px;
@@ -21,15 +17,53 @@
 			border-bottom-width: 1px;
 			height: 30px;
 			padding: 3px 5px;
+			white-space: nowrap;
+		}
+		
+		.searchBg {
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 25px;
+			opacity: 0.7;
+			position: fixed;
+			padding: 5px 0 5px 10px;
+			background-color: #FFFFFF;
+			border-radius: 0 0 5px 5px;
+		}
+		
+		.searchDiv {
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 25px;
+			position: fixed;
+			z-index: 5;
+			margin: 5px 0 0 10px;
+		}
+		
+		.searchInput {
+			opacity: 1;
+			float: left;
+			margin-left: 5px;
+		}
+		
+		.searchInput:last-child {
+			margin-top: -1px;
 		}
 	</style>
 </head>
 
 <body>
-	<div style="position: fixed; top: 0; left: 0; padding: 10px 0 0 10px; background-color: #FFFFFF; height: 25px; width: 100%;">
-		<form action="/data" method="get">
-			<input type="text" name="name" placeholder="要查询的数据表名称" style="width: 200px;" />
-			<button type="submit">查询</button>
+	<div class="searchBg"></div>
+	<div class="searchDiv">
+		<form action="/data" method="post">
+			<div class="searchInput">
+				<input type="text" name="name" placeholder="要查询的数据表名称" style="width: 200px;" />
+			</div>
+			<div class="searchInput">
+				<button type="submit">查询</button>
+			</div>
 		</form>
 	</div>
 

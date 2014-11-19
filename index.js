@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.get('/data', function(req, res) {
+app.use('/data', function(req, res) {
 	var conn = mysql.createConnection({
 		host : '192.168.120.10',
 		user : 'root',
@@ -22,7 +22,7 @@ app.get('/data', function(req, res) {
 		database : 'uccp'
 	});
 
-	var tableName = (req.query && req.query.name) ? req.query.name.toUpperCase() : 'T_CM_USER';
+	var tableName = (req.body && req.body.name) ? req.body.name.toUpperCase() : 'T_CM_USER';
 
 	conn.query('SELECT * FROM ' + tableName, function(err, rows, fields) {
 		if (err) {
@@ -37,7 +37,7 @@ app.get('/data', function(req, res) {
 			}
 
 			res.send(ejs.render(fd.toString(), {
-				title : 'someTitle',
+				title : tableName,
 				tableName : tableName,
 				data : rows
 			}));
